@@ -1,0 +1,52 @@
+{
+  "name": "@portalti/mf-apex",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview --port 9020",
+    "typecheck": "vue-tsc --noEmit",
+    "poc:dump": "node scripts/dump-xlsx-sheets.mjs",
+    "poc:build": "node scripts/build-poc-json.mjs",
+    "poc:data": "npm run poc:dump && npm run poc:build",
+    "styleguide:sync": "powershell -ExecutionPolicy Bypass -File scripts/sync-portal-style-guide.ps1"
+  },
+  "dependencies": {
+    "@mdi/font": "^7.4.47",
+    "@tiptap/extension-heading": "^3.23.4",
+    "@tiptap/extension-highlight": "^3.23.4",
+    "@tiptap/extension-link": "^3.23.4",
+    "@tiptap/extension-list": "^3.23.4",
+    "@tiptap/extension-placeholder": "^3.23.4",
+    "@tiptap/extension-text-align": "^3.23.4",
+    "@tiptap/extension-underline": "^3.23.4",
+    "@tiptap/pm": "^3.23.4",
+    "@tiptap/starter-kit": "^3.23.4",
+    "@tiptap/vue-3": "^3.23.4",
+    "axios": "^1.16.0",
+    "exceljs": "^4.4.0",
+    "is-uikit-components-vue": "^1.0.8",
+    "mammoth": "^1.12.0",
+    "pinia": "^2.2.6",
+    "primeicons": "^7.0.0",
+    "primevue": "^4.5.5",
+    "single-spa": "^6.0.3",
+    "single-spa-vue": "^3.0.1",
+    "vue": "^3.5.13",
+    "vue-router": "^4.5.0"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^5.2.1",
+    "autoprefixer": "^10.4.20",
+    "postcss": "^8.5.3",
+    "tailwindcss": "^3.4.17",
+    "typescript": "~5.6.3",
+    "vite": "^5.4.11",
+    "vite-plugin-css-injected-by-js": "^3.5.2",
+    "vite-plugin-single-spa": "^0.7.0",
+    "vue-tsc": "^2.1.10",
+    "xlsx": "^0.18.5"
+  }
+}

@@ -1,0 +1,496 @@
+@import '@mdi/font/css/materialdesignicons.min.css';
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* Alineado a la paleta corporativa de is-uikit-components-vue (tokens reales) */
+    --apex-brand-primary: #1361b9; /* interseguro-500 */
+    --apex-brand-interactive: #6389f0; /* is.info */
+    --apex-brand-accent: #ff429b; /* interseguro-secondary-500 / brand.pink */
+    --apex-color-g100: #1361b9; /* interseguro-500 */
+    --apex-color-gh: #00b565; /* is.success */
+    --apex-color-oy: #ffa813; /* is.warning */
+    --apex-color-re: #f14649; /* is.danger */
+    --apex-color-o100: #ff429b; /* brand.pink */
+    --apex-color-lb100: #55aced; /* interseguro-info / brand.lightblue */
+    --apex-color-neutral: #94a3b8;
+    --apex-color-neutral-light: #cbd5e1;
+    --apex-surface-table-head: #f4f7fc;
+    --apex-surface-row-hover: #f9fafb;
+    --apex-border-table: #e5e7eb;
+    --apex-border-row: #f3f4f6;
+    --apex-text-heading: #111827;
+    --apex-text-label: #6b7280;
+    --apex-shadow-tooltip: 0 8px 16px rgba(0, 0, 0, 0.08);
+    --apex-surface-bg: #f8fafc;
+    --apex-surface-panel: #ffffff;
+    --apex-surface-muted: #f1f5f9;
+    --apex-border-soft: #e2e8f0;
+    --apex-border-brand: #cfdfea;
+    --apex-text-strong: #1e293b;
+    --apex-text-muted: #64748b;
+    --apex-radius-control: 8px;
+    --apex-radius-panel: 12px;
+    --apex-shadow-panel: 0 8px 22px rgba(15, 23, 42, 0.06);
+    --apex-shadow-soft: 0 2px 10px rgba(15, 23, 42, 0.04);
+  }
+
+  body {
+    color: #1e293b;
+    background: #fafafa;
+  }
+
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+  }
+
+  ::-webkit-scrollbar {
+    width: 0.375rem;
+    height: 0.375rem;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: #eef2ff;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    border-radius: 999px;
+    background: #a5b4fc;
+  }
+
+  /* Animaciones globales */
+  @keyframes apex-shimmer {
+    0%   { background-position: -400% 0; }
+    100% { background-position:  400% 0; }
+  }
+
+  @keyframes apex-fade-in {
+    from { opacity: 0; transform: translateY(6px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes apex-scale-in {
+    from { opacity: 0; transform: scale(0.97); }
+    to   { opacity: 1; transform: scale(1); }
+  }
+
+  @keyframes apex-bar-grow {
+    from { transform: scaleX(0); }
+    to   { transform: scaleX(1); }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+}
+
+@layer components {
+  :where(.apex-mf-view > *) {
+    min-width: 0;
+  }
+
+  :where(.pr, .pdet, .inc-mod, .inc-dash, .ig, .cfg, .log, .mant, .sq, .pap) {
+    width: 100%;
+    min-width: 0;
+  }
+
+  :where(.p-datatable) {
+    max-width: 100%;
+    border-radius: var(--apex-radius-panel);
+  }
+
+  .apex-mf-view :is(.pr__head, .pr__controls, .pdet__sticky, .pdet__panel, .inc-mod__body, .ig__head, .ig__controls, .ig__table-shell, .log__filters, .log__deleted, .mant__add, .sq__head, .sq__toolbar, .pap__modal-card) {
+    border: 1px solid var(--apex-border-soft);
+    border-radius: var(--apex-radius-panel);
+    background: var(--apex-surface-panel);
+    box-shadow: var(--apex-shadow-soft);
+  }
+
+  .apex-mf-view :is(.pr__head, .pr__controls, .pdet__panel, .ig__head, .ig__controls, .ig__table-shell, .log__filters, .mant__add, .sq__head, .sq__toolbar) {
+    padding: 1rem;
+  }
+
+  .apex-mf-view :is(.pr__head, .pdet__sticky, .inc-mod__body, .ig__head, .ig__controls, .ig__table-shell, .log__filters, .mant__add) {
+    background: linear-gradient(180deg, #ffffff 0%, #fbfdff 100%);
+  }
+
+  .apex-mf-view :is(.pr__title, .pdet__title, .inc-mod__title, .inc-dash__title, .ig__title, .mant__h, .log__title, .pap__title) {
+    color: var(--apex-text-strong);
+    letter-spacing: 0;
+  }
+
+  .apex-mf-view :is(.pr__hint, .pdet__hint-line, .inc-mod__sub, .inc-dash__hint, .ig__hint, .mant__sub, .log__desc, .pap__desc) {
+    color: var(--apex-text-muted);
+  }
+
+  .apex-mf-view :is(.pr__papelera, .pr__toggle, .inc-tab, .cfg__sub, .mant__tab, .log__section, .sq__tab, .ig__filters-select, .ig__filters-fixed) {
+    border-radius: var(--apex-radius-control);
+  }
+
+  .apex-mf-view :is(.p-inputtext, .p-select, .p-dropdown, .p-multiselect, .p-datepicker-input, .app-date-picker__control, .app-month-picker__control) {
+    border-radius: var(--apex-radius-control);
+    border-color: #cbd5e1;
+    background: #ffffff;
+  }
+
+  .apex-mf-view :is(.p-inputtext:enabled:focus, .p-select:not(.p-disabled).p-focus, .p-dropdown:not(.p-disabled).p-focus, .p-multiselect:not(.p-disabled).p-focus) {
+    border-color: var(--apex-brand-interactive);
+    box-shadow: 0 0 0 3px rgba(99, 137, 240, 0.16);
+  }
+
+  .apex-mf-view :is(.p-button) {
+    border-radius: var(--apex-radius-control);
+    font-weight: 700;
+  }
+
+  .apex-mf-view :is(.pr__cards, .inc-dash__metrics, .ig__summary, .pdet__kpi-row, .pi-ind__list) {
+    gap: 0.75rem;
+  }
+
+  .apex-mf-view :is(.pr__card, .metric-card, .inc-dash__meta-card, .ops-card, .ig__summary-card, .pdet__kpi, .pdet__kpi-dual, .pi-ind__card, .pde__card, .pc__resumen-item) {
+    border: 1px solid var(--apex-border-soft);
+    border-radius: var(--apex-radius-panel);
+    background: #ffffff;
+    box-shadow: var(--apex-shadow-soft);
+  }
+
+  .apex-mf-view :is(.metric-card__icon, .inc-dash__meta-icon, .ops-card__icon, .ig__summary-icon, .pdet__prox-icon, .pa-code, .pc__ico, .pa__ico) {
+    border-radius: 10px;
+  }
+
+  .apex-mf-view :is(.metric-card__icon, .inc-dash__meta-icon, .ops-card__icon, .ig__summary-icon) {
+    background: #eff6ff;
+    color: var(--apex-brand-primary);
+  }
+
+  .apex-mf-view :is(.pr__sem, .badge-pill, .badge-xs, .pc-est, .pc-hito-est, .pa-est, .pdet__meta-chip, .ig__filters-fixed, .pc-pri) {
+    border-radius: 999px;
+    letter-spacing: 0;
+  }
+
+  .apex-mf-view :is(.cfg__subnav, .inc-tabs, .mant__tabs, .log__sections, .sq__tabs, .pr__view-toggle, .pc__vista) {
+    border: 1px solid var(--apex-border-soft);
+    border-radius: var(--apex-radius-panel);
+    background: #f1f5f9;
+    padding: 0.35rem;
+  }
+
+  .apex-mf-view :is(.cfg__sub--active, .inc-tab--active, .mant__tab--on, .log__section--on, .sq__tab--on, .pr__toggle--on, .pc__seg--on) {
+    border-color: #e2e8f0;
+    background: #ffffff;
+    color: var(--apex-text-strong);
+    box-shadow:
+      0 2px 8px rgba(15, 23, 42, 0.05),
+      inset 0 -2px 0 0 var(--apex-brand-accent);
+  }
+
+  .apex-mf-view :is(.p-datatable) {
+    border: 1px solid var(--apex-border-soft);
+    overflow: hidden;
+    background: #ffffff;
+    box-shadow: var(--apex-shadow-soft);
+  }
+
+  .apex-mf-view :is(.p-datatable-thead > tr > th) {
+    background: #f8fafc;
+    color: #475569;
+    font-size: 0.72rem;
+    font-weight: 800;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  .apex-mf-view :is(.p-datatable-tbody > tr > td) {
+    color: #334155;
+    border-color: #e2e8f0;
+  }
+
+  .apex-mf-view :is(.p-datatable-tbody > tr:hover > td) {
+    background: #f8fbff;
+  }
+
+  .apex-mf-view :is(.p-paginator) {
+    border: 1px solid var(--apex-border-soft);
+    border-radius: var(--apex-radius-panel);
+    background: #ffffff;
+  }
+
+  .apex-mf-view :is(.pc__gantt, .pc__table-wrap, .pc__gantt-body, .pa-grupo, .pde__section, .pdet__docs-group, .pdet__docs-subgroup, .pdet__docs-li, .pdet__prox-group) {
+    border-color: var(--apex-border-soft);
+    border-radius: var(--apex-radius-panel);
+  }
+
+  .apex-mf-view :is(.pc__gantt-head, .pc__toolbar, .pa__head, .pdet__prox-summary) {
+    background: #f8fafc;
+    border-color: var(--apex-border-soft);
+  }
+
+  :where(.p-datatable-wrapper, .p-datatable-table-container) {
+    max-width: 100%;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  :where(.p-datatable table) {
+    min-width: max-content;
+  }
+
+  :where(.p-datatable th, .p-datatable td) {
+    text-align: center;
+    vertical-align: middle;
+    overflow-wrap: anywhere;
+  }
+
+  :where(.p-datatable .p-column-header-content, .p-datatable .p-datatable-column-header-content) {
+    justify-content: center;
+    text-align: center;
+    width: 100%;
+  }
+
+  :where(table th) {
+    text-align: center;
+  }
+
+  :where(.mant__table) {
+    display: block;
+    max-width: 100%;
+    overflow-x: auto;
+    border: 1px solid var(--apex-border-soft);
+    border-radius: var(--apex-radius-panel);
+    background: var(--apex-surface-panel);
+    -webkit-overflow-scrolling: touch;
+  }
+
+  :where(.mant__table thead, .mant__table tbody, .mant__table tr) {
+    width: 100%;
+  }
+
+  :where(.mant__table th, .mant__table td) {
+    white-space: nowrap;
+  }
+
+  :where(.pr__table, .log__table, .aud__table, .pap__table, .pdet__pend-table, .pc__table, .pa__table, .ig__table) {
+    width: 100%;
+  }
+
+  :where(.pr__table, .log__table, .aud__table, .pap__table, .pdet__pend-table, .pc__table, .pa__table) :where(.p-datatable-table-container, .p-datatable-wrapper) {
+    border: 1px solid var(--apex-border-soft);
+    border-radius: var(--apex-radius-panel);
+    background: var(--apex-surface-panel);
+  }
+
+  :where(.pr__controls, .log__filters, .mant__add, .sq__toolbar, .ig__controls, .pdet__pend-head, .pdet__panel--docs .pdet__docs-head) {
+    min-width: 0;
+  }
+
+  :where(.pr__controls, .log__filters, .mant__add, .sq__toolbar, .ig__controls) :where(.p-inputtext, .p-select, .p-dropdown, .p-multiselect, .p-iconfield) {
+    width: 100%;
+    min-width: 0;
+  }
+
+  :where(.pr__head-row, .ig__table-head, .inc-mod__hero, .inc-dash__hero, .pdet__head, .pdet__pend-head) {
+    min-width: 0;
+  }
+
+  :where(.pr__title, .pdet__title, .inc-mod__title, .inc-dash__title, .ig__title, .cfg__bc-current, .log__title, .mant__h, .pap__title) {
+    overflow-wrap: anywhere;
+  }
+
+  :where(.pr__project-link, .pr__card-title, .pdet__docs-name, .pdet__prox-nombre, .ig__dlg-title, .ig__em, .log__detail) {
+    min-width: 0;
+    overflow-wrap: anywhere;
+  }
+
+  :where(.inc-tabs, .cfg__subnav, .mant__tabs, .log__sections, .sq__tabs) {
+    max-width: 100%;
+    overflow-x: auto;
+    scrollbar-width: thin;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  :where(.inc-tab, .cfg__sub, .mant__tab, .log__section, .sq__tab) {
+    white-space: nowrap;
+  }
+
+  :where(.p-dialog) {
+    max-width: calc(100vw - 1rem);
+  }
+
+  :where(.p-dialog-content) {
+    min-width: 0;
+  }
+
+  @media (max-width: 1024px) {
+    :where(.pr__controls, .ig__controls, .log__filters, .mant__add) {
+      align-items: stretch;
+    }
+
+    :where(.pr__controls-right, .pr__filters, .ig__filters) {
+      width: 100%;
+    }
+  }
+
+  @media (max-width: 768px) {
+    :where(.pr__head-row, .inc-mod__hero, .ig__table-head, .pdet__head, .pdet__panel--docs .pdet__docs-head) {
+      align-items: stretch;
+      flex-direction: column;
+    }
+
+    :where(.pr__head-actions, .pr__controls-right, .pdet__docs-li, .pap__actions, .mant__actions) {
+      width: 100%;
+    }
+
+    :where(.pr__head-actions, .pr__controls-right, .pap__actions, .mant__actions) {
+      justify-content: flex-start;
+    }
+
+    :where(.pr__filter-squad, .pr__filter-estado, .pr__filter-mes, .pr__filter-evolution, .pr__search-wrap, .ig__search-wrap, .log__field, .mant__field) {
+      flex-basis: 100%;
+      max-width: none;
+      min-width: 0;
+      width: 100%;
+    }
+
+    :where(.pr__cards) {
+      grid-template-columns: 1fr;
+    }
+
+    :where(.pdet__kpi-row, .pdet__kpi-row--2, .pdet__kpi-row--3, .inc-dash__metrics, .inc-dash__metrics--five, .inc-dash__metrics--three) {
+      grid-template-columns: 1fr;
+    }
+
+    :where(.pdet__docs-subgroup, .pdet__docs-subgroup--nested) {
+      margin-left: 0;
+    }
+
+    :where(.p-dialog) {
+      width: calc(100vw - 1rem) !important;
+    }
+  }
+
+  @media (max-width: 520px) {
+    :where(.apex-mf-view) {
+      font-size: 14px;
+    }
+
+    :where(.pr__toggle, .inc-tab, .cfg__sub, .mant__tab, .log__section, .sq__tab) {
+      flex: 1 0 auto;
+      justify-content: center;
+    }
+
+    :where(.pr__actions, .pap__actions, .mant__actions, .pdet__docs-li) {
+      flex-direction: column;
+      align-items: stretch;
+    }
+
+    :where(.pr__actions a, .pap__actions > *, .mant__actions > *, .pdet__docs-li > button, .pdet__docs-li .p-button) {
+      width: 100%;
+      justify-content: center;
+    }
+
+    :where(.p-datatable) {
+      font-size: 12px;
+    }
+  }
+
+  /* ─── Tonos de IsTag sin severidad nativa en el kit ─────────── */
+  .apex-mf-view :is(.p-tag.is-tag--sky) {
+    background: rgba(85, 172, 237, 0.16);
+    color: #0b4a78;
+  }
+
+  .apex-mf-view :is(.p-tag.is-tag--purple) {
+    background: rgba(130, 69, 160, 0.14);
+    color: #6b2f86;
+  }
+
+  .apex-mf-view :is(.p-tag.is-tag--pink) {
+    background: rgba(255, 66, 155, 0.14);
+    color: #b3186a;
+  }
+
+  /* ─── Skeleton loader ───────────────────────────────────────── */
+  .apex-skeleton {
+    display: block;
+    background: linear-gradient(
+      90deg,
+      #e2e8f0 25%,
+      #f1f5f9 50%,
+      #e2e8f0 75%
+    );
+    background-size: 400% 100%;
+    animation: apex-shimmer 1.8s ease-in-out infinite;
+    border-radius: 6px;
+    flex-shrink: 0;
+  }
+
+  /* ─── Entradas suaves para paneles ─────────────────────────── */
+  .apex-mf-view > * {
+    animation: apex-fade-in 0.22s ease-out both;
+  }
+
+  /* ─── Focus rings globales ──────────────────────────────────── */
+  :focus-visible {
+    outline: 2px solid var(--apex-brand-interactive);
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+
+  /* ─── Transiciones suaves en elementos interactivos ─────────── */
+  :where(
+    .p-button,
+    .p-datatable-tbody > tr,
+    .dash-block--link,
+    .kpi--link
+  ) {
+    transition-property: color, background-color, border-color, box-shadow, transform, opacity;
+    transition-duration: 0.18s;
+    transition-timing-function: ease;
+  }
+
+  /* ─── Hover mejorado en filas de tabla ──────────────────────── */
+  .apex-mf-view :is(.p-datatable-tbody > tr:hover > td) {
+    background: #f0f7ff;
+    transition: background 0.15s ease;
+  }
+
+  /* ─── Empty state visual ────────────────────────────────────── */
+  .apex-empty-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 2.5rem 1.5rem;
+    color: var(--apex-text-muted);
+    text-align: center;
+  }
+
+  .apex-empty-state__icon {
+    font-size: 2rem;
+    opacity: 0.4;
+  }
+
+  .apex-empty-state__msg {
+    font-size: 0.9375rem;
+    font-weight: 500;
+    color: var(--apex-text-muted);
+  }
+
+  .apex-empty-state__hint {
+    font-size: 0.8125rem;
+    color: var(--apex-text-muted);
+    opacity: 0.75;
+  }
+}

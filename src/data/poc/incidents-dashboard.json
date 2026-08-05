@@ -1,0 +1,16 @@
+{
+  "fuente": "Mapeo y análisis de Incidentes_Querys.xlsx (pestañas G1–G3 y Soporte)",
+  "generado": "2026-04-29",
+  "conteos": {
+    "g1Ratificacion": 4,
+    "g2Desarrollo": 61,
+    "g3Cerrados": 10,
+    "soporteNegocio": 150,
+    "otros": 0
+  },
+  "iniciativasPb": 94,
+  "iniciativasAbiertas": 76,
+  "iniciativasCerradas": 18,
+  "proyectosSueltos": 0,
+  "proyectosNota": "En la app el módulo Proyectos inicia vacío; los ítems se crean con HU-ITP-025 y se guardan en el navegador (localStorage)."
+}
