@@ -1,91 +1,106 @@
-# `@portalti/mf-apex`
+# @portalti/mf-apex
 
-Microfrontend de Apex construido con `Vue 3`, `single-spa` y `is-uikit-components-vue`, alineado al estándar de `is-cr-crosscore-portalti-mf-example`.
+## Descripción y propósito
 
-## Arquitectura
+Microfrontend de **Apex** (Portal de gestión de proyectos, iniciativas, squads e incidentes GTI) construido con Vue 3, single-spa e `is-uikit-components-vue`. Se embebe en Portal TI: la sesión, el JWT y los permisos los provee el host vía `window.portaltiShared`; el MF consume el backend Apex REST configurado en build o inyectado en runtime.
 
-- Entry point `single-spa`: `src/main.ts`
-- Lifecycles exportados: `bootstrap`, `mount`, `unmount`
-- Router interno: `vue-router`
-- UI corporativa: `is-uikit-components-vue`
-- Estado local: `pinia`
+## Repositorio
 
-Este proyecto ya no corre con login standalone propio.
-La sesión, token y permisos deben venir del host por medio de `window.portaltiShared`.
+https://github.com/IOscco/is-cr-crosscore-portal-mf-apex
 
 ## Requisitos
 
-- Node.js 18+
+- Node.js 18+ (CI usa Node 20 LTS)
 - npm 9+
-- Un host o entorno que exponga `window.portaltiShared`
-- Backend Apex disponible en la URL configurada por `VITE_API_BASE_URL` (URL absoluta **o** ruta bajo el mismo host del portal, p. ej. `/api/apex`, que se resuelve contra `window.location.origin`). El host también puede definir `window.__APEX_API_BASE_URL__`, un `<meta name="apex-api-base" content="...">`, o `portaltiShared.getApexApiBaseUrl()` antes de cargar el MF. Con `VITE_LOG_API_BASE=true` se imprime en consola la base usada en el primer request.
+- Host Portal TI que exponga `window.portaltiShared`, o `VITE_STANDALONE_DEV=true` para desarrollo local
+- Backend Apex accesible en la URL de `VITE_API_BASE_URL` (absoluta o ruta bajo el mismo host HTTPS del portal)
 
-## Scripts
+## Estructura del proyecto
 
-- `npm run dev`: levanta Vite en `http://localhost:9025`
-- `npm run build`: genera el bundle del microfrontend
-- `npm run preview`: sirve el build en `http://localhost:9020`
-- `npm run typecheck`: ejecuta `vue-tsc --noEmit`
-- `npm run poc:data`: regenera datos PoC desde `scripts/`
+```
+is-cr-crosscore-portal-mf-apex/
+├── .github/workflows/          # CI/CD build y deploy Cloud Run
+├── deployments/nginx/          # Configuración Nginx del contenedor
+├── docs/                       # Documentación obligatoria (config, openapi, flujos)
+├── scripts/                    # Utilidades PoC y sync de style guide
+├── src/
+│   ├── main.ts                 # Lifecycles single-spa (bootstrap, mount, unmount)
+│   ├── config.ts               # Variables VITE_* y resolución de API base
+│   ├── router/                 # Rutas vue-router bajo /portal-apex
+│   ├── plugins/axios.ts        # Cliente HTTP con token del host
+│   ├── lib/                    # Clientes API (proyectos, iniciativas, squads, etc.)
+│   ├── views/                  # Pantallas por módulo
+│   ├── components/             # Layout y componentes compartidos
+│   ├── modules/shared/         # Integración portaltiShared y permisos
+│   └── data/poc/               # JSON de demostración (PoC)
+├── Dockerfile                  # Imagen Nginx + dist
+├── vite.config.ts              # Build MF (puerto dev 9025, entry main.js)
+└── README.md                   # Este archivo
+```
 
-## Desarrollo
+## Quickstart
 
-1. Instala dependencias con `npm install`.
-2. Configura `VITE_API_BASE_URL`.
-3. Ejecuta `npm run dev`.
-4. Carga el microfrontend desde el host `single-spa` o desde el entorno donde se inyecte `portaltiShared`.
+```bash
+npm install
+cp .env.example .env
+# Editar VITE_API_BASE_URL y, si aplica, VITE_STANDALONE_DEV=true
+npm run dev
+```
 
-Ejemplo para desarrollo local contra el backend local:
+- Dev: http://localhost:9025
+- Preview del build: `npm run build && npm run preview` → http://localhost:9020
+- Typecheck: `npm run typecheck`
+
+## Configuración esencial
+
+| Variable | Descripción |
+| --- | --- |
+| `VITE_APP_CODE` | Código de app para permisos (`APEX`) |
+| `VITE_API_BASE_URL` | Base del backend Apex |
+| `VITE_STANDALONE_DEV` | Mock de `portaltiShared` en local |
+| `VITE_LOG_API_BASE` | Log de la base API en consola |
+
+Detalle completo: [docs/configurations.md](docs/configurations.md).
+
+Ejemplo desarrollo local:
 
 ```env
+VITE_APP_CODE=APEX
 VITE_API_BASE_URL=http://127.0.0.1:3000
+VITE_STANDALONE_DEV=true
 ```
 
-Ejemplo para integración/despliegue vía API Gateway:
+Ejemplo despliegue embebido en portal HTTPS:
 
 ```env
-VITE_API_BASE_URL=https://<api-gateway>
+VITE_APP_CODE=APEX
+VITE_API_BASE_URL=/ruta-del-gateway/itp-api
 ```
-
-El servidor Vite corre en `9025` y ya no actúa como proxy HTTP del backend.
-Las llamadas API salen directamente hacia `VITE_API_BASE_URL`.
 
 ## Contrato con el host
 
-El host debe exponer `window.portaltiShared` con el contrato tipado en `src/vite-env.d.ts`.
+El host debe exponer `window.portaltiShared` (tipos en `src/vite-env.d.ts`):
 
-El microfrontend depende de estos métodos:
+- `ready()`, `login()`, `getSession()`, `getToken()`, `getPermisos(appCode)`
+- Opcional: `getApexApiBaseUrl()`, `getRoles(appCode)`
 
-- `ready()`
-- `login()`
-- `getSession()`
-- `getToken()`
-- `getPermisos(appCode)`
+La navegación lateral usa permisos del host; la autorización de rutas valida `NombreOperacion === route.name`.
 
-## Permisos
+## Despliegue
 
-- La navegación lateral se alimenta con `shared.getPermisos(config.appCode)`.
-- La autorización de rutas valida `NombreOperacion === route.name`.
-- Capacidades de UI como edición de proyectos o acceso a configuración se infieren desde los permisos visibles entregados por el host.
+Dónde vive: GCP Cloud Run
 
-## Build
+Ambientes: Dev / Stg / Prod → [docs/deployment.md](docs/deployment.md)
 
-La configuración de build usa:
+Integraciones HTTP: [docs/integrations.md](docs/integrations.md)
 
-- formato `es`
-- `entryFileNames: 'main.js'`
-- `modulePreload: false`
+Flujos principales: [docs/flows.md](docs/flows.md)
 
-Esto mantiene el bundle compatible con la carga como microfrontend en `single-spa`.
+API consumida (OpenAPI): [docs/openapi.json](docs/openapi.json)
 
-## Notas
+## Notas técnicas
 
-- `src/main.ts` no monta la app en `#app`; solo exporta lifecycles `single-spa`.
-- `src/modules/shared/services/shared.ts` no tiene fallback local: si `portaltiShared` no existe, el microfrontend no puede autenticarse.
-- `src/plugins/axios.ts` obtiene el token desde la shared API del host.
-- En local, el backend se consume directamente con `VITE_API_BASE_URL`; no se usan proxies de Vite.
-
-## CI/CD
-
-El repositorio mantiene artefactos de despliegue en `.github/workflows/` y `deployments/`.
-Si se ajusta el pipeline, debe respetarse que este proyecto es un microfrontend host-driven y no una app standalone.
+- Entry single-spa: `src/main.ts` exporta lifecycles; no monta en `#app` standalone.
+- Build: formato ES, `entryFileNames: main.js`, `modulePreload: false`.
+- Sin `portaltiShared` (y sin `VITE_STANDALONE_DEV`), el MF no puede autenticarse.
+- En HTTPS del portal, no usar `http://127.0.0.1` como base del API (contenido mixto).
