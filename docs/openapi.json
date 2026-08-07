@@ -1,0 +1,258 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Apex API — contrato consumido por @portalti/mf-apex",
+    "description": "Este microfrontend no expone endpoints HTTP. Este documento describe las rutas REST del backend Apex invocadas desde src/lib/*-api.ts. La especificación autoritativa del API pertenece al repositorio del backend Apex.",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "{apexBaseUrl}",
+      "variables": {
+        "apexBaseUrl": {
+          "default": "https://api.example.com",
+          "description": "Resuelto por VITE_API_BASE_URL, meta apex-api-base o portaltiShared.getApexApiBaseUrl()"
+        }
+      }
+    }
+  ],
+  "security": [{ "bearerAuth": [] }],
+  "tags": [
+    { "name": "proyectos", "description": "Proyectos, documentos e indicadores" },
+    { "name": "actividades", "description": "Cronograma, hitos y actividades" },
+    { "name": "iniciativas", "description": "Iniciativas y carga masiva" },
+    { "name": "catalogos", "description": "Catálogos de negocio" },
+    { "name": "squads", "description": "Equipos resolutores" },
+    { "name": "config", "description": "Mantenedores y auditoría" },
+    { "name": "incidentes-gti", "description": "Integración incidentes GTI" }
+  ],
+  "paths": {
+    "/proyectos/metricas-dashboard": {
+      "get": {
+        "tags": ["proyectos"],
+        "summary": "Métricas abiertos/cerrados del dashboard",
+        "responses": { "200": { "description": "OK" } }
+      }
+    },
+    "/proyectos": {
+      "get": {
+        "tags": ["proyectos"],
+        "summary": "Listado paginado de proyectos",
+        "responses": { "200": { "description": "OK" } }
+      },
+      "post": {
+        "tags": ["proyectos"],
+        "summary": "Crear proyecto",
+        "responses": { "201": { "description": "Created" } }
+      }
+    },
+    "/proyectos/{id}": {
+      "get": {
+        "tags": ["proyectos"],
+        "summary": "Detalle de proyecto",
+        "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }],
+        "responses": { "200": { "description": "OK" } }
+      },
+      "patch": {
+        "tags": ["proyectos"],
+        "summary": "Actualizar proyecto",
+        "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }],
+        "responses": { "200": { "description": "OK" } }
+      },
+      "delete": {
+        "tags": ["proyectos"],
+        "summary": "Eliminar proyecto (papelera)",
+        "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }],
+        "responses": { "204": { "description": "No Content" } }
+      }
+    },
+    "/proyectos/{id}/indicadores": {
+      "get": {
+        "tags": ["proyectos"],
+        "summary": "Indicadores del proyecto",
+        "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }],
+        "responses": { "200": { "description": "OK" } }
+      }
+    },
+    "/proyectos/{id}/auditoria": {
+      "get": {
+        "tags": ["proyectos"],
+        "summary": "Historial de auditoría del proyecto",
+        "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }],
+        "responses": { "200": { "description": "OK" } }
+      }
+    },
+    "/proyectos/{proyectoId}/documentos": {
+      "get": {
+        "tags": ["proyectos"],
+        "summary": "Listar documentos del proyecto",
+        "parameters": [{ "name": "proyectoId", "in": "path", "required": true, "schema": { "type": "string" } }],
+        "responses": { "200": { "description": "OK" } }
+      },
+      "post": {
+        "tags": ["proyectos"],
+        "summary": "Subir documento al proyecto",
+        "parameters": [{ "name": "proyectoId", "in": "path", "required": true, "schema": { "type": "string" } }],
+        "responses": { "201": { "description": "Created" } }
+      }
+    },
+    "/proyectos/papelera": {
+      "get": {
+        "tags": ["proyectos"],
+        "summary": "Listado de proyectos en papelera",
+        "responses": { "200": { "description": "OK" } }
+      }
+    },
+    "/proyectos/{proyectoId}/cronograma": {
+      "get": {
+        "tags": ["actividades"],
+        "summary": "Cronograma del proyecto",
+        "parameters": [{ "name": "proyectoId", "in": "path", "required": true, "schema": { "type": "string" } }],
+        "responses": { "200": { "description": "OK" } }
+      }
+    },
+    "/proyectos/{proyectoId}/actividades": {
+      "get": {
+        "tags": ["actividades"],
+        "summary": "Actividades agrupadas del proyecto",
+        "parameters": [{ "name": "proyectoId", "in": "path", "required": true, "schema": { "type": "string" } }],
+        "responses": { "200": { "description": "OK" } }
+      },
+      "post": {
+        "tags": ["actividades"],
+        "summary": "Crear hito o actividad",
+        "parameters": [{ "name": "proyectoId", "in": "path", "required": true, "schema": { "type": "string" } }],
+        "responses": { "201": { "description": "Created" } }
+      }
+    },
+    "/actividades/{actividadId}": {
+      "get": {
+        "tags": ["actividades"],
+        "summary": "Detalle de actividad",
+        "parameters": [{ "name": "actividadId", "in": "path", "required": true, "schema": { "type": "string" } }],
+        "responses": { "200": { "description": "OK" } }
+      },
+      "put": {
+        "tags": ["actividades"],
+        "summary": "Actualizar actividad",
+        "parameters": [{ "name": "actividadId", "in": "path", "required": true, "schema": { "type": "string" } }],
+        "responses": { "200": { "description": "OK" } }
+      },
+      "delete": {
+        "tags": ["actividades"],
+        "summary": "Eliminar actividad",
+        "parameters": [{ "name": "actividadId", "in": "path", "required": true, "schema": { "type": "string" } }],
+        "responses": { "204": { "description": "No Content" } }
+      }
+    },
+    "/actividades/{actividadId}/cerrar": {
+      "patch": {
+        "tags": ["actividades"],
+        "summary": "Cerrar actividad",
+        "parameters": [{ "name": "actividadId", "in": "path", "required": true, "schema": { "type": "string" } }],
+        "responses": { "200": { "description": "OK" } }
+      }
+    },
+    "/iniciativas": {
+      "get": {
+        "tags": ["iniciativas"],
+        "summary": "Listado de iniciativas",
+        "responses": { "200": { "description": "OK" } }
+      },
+      "post": {
+        "tags": ["iniciativas"],
+        "summary": "Crear iniciativa",
+        "responses": { "201": { "description": "Created" } }
+      }
+    },
+    "/iniciativas/{id}": {
+      "get": {
+        "tags": ["iniciativas"],
+        "summary": "Detalle de iniciativa",
+        "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }],
+        "responses": { "200": { "description": "OK" } }
+      },
+      "patch": {
+        "tags": ["iniciativas"],
+        "summary": "Actualizar iniciativa",
+        "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }],
+        "responses": { "200": { "description": "OK" } }
+      },
+      "delete": {
+        "tags": ["iniciativas"],
+        "summary": "Eliminar iniciativa",
+        "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }],
+        "responses": { "204": { "description": "No Content" } }
+      }
+    },
+    "/squads": {
+      "get": {
+        "tags": ["squads"],
+        "summary": "Listado de squads (tarjetas)",
+        "responses": { "200": { "description": "OK" } }
+      },
+      "post": {
+        "tags": ["squads"],
+        "summary": "Crear squad",
+        "responses": { "201": { "description": "Created" } }
+      }
+    },
+    "/squads/active": {
+      "get": {
+        "tags": ["squads"],
+        "summary": "Squads activos",
+        "responses": { "200": { "description": "OK" } }
+      }
+    },
+    "/config/catalog": {
+      "get": {
+        "tags": ["config"],
+        "summary": "Catálogo activo por categoría",
+        "parameters": [
+          {
+            "name": "category",
+            "in": "query",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": { "200": { "description": "OK" } }
+      }
+    },
+    "/config/auditoria/logs": {
+      "get": {
+        "tags": ["config"],
+        "summary": "Logs de auditoría",
+        "responses": { "200": { "description": "OK" } }
+      }
+    },
+    "/incidentes/gti/status": {
+      "get": {
+        "tags": ["incidentes-gti"],
+        "summary": "Estado de la integración GTI",
+        "responses": { "200": { "description": "OK" } }
+      }
+    },
+    "/incidentes/gti/tickets": {
+      "get": {
+        "tags": ["incidentes-gti"],
+        "summary": "Listado de tickets GTI",
+        "parameters": [
+          { "name": "startDate", "in": "query", "schema": { "type": "string", "format": "date" } },
+          { "name": "grupo", "in": "query", "schema": { "type": "string" } }
+        ],
+        "responses": { "200": { "description": "OK" }, "401": { "description": "Sin token válido" } }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT",
+        "description": "Token obtenido de window.portaltiShared.getToken()"
+      }
+    }
+  }
+}
