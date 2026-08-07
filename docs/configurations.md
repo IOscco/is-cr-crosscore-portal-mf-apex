@@ -28,3 +28,5 @@ Estas opciones no son variables de entorno del MF; las define el shell que carga
 - Desde una página **HTTPS** del portal, la base del API **no puede** ser `http://127.0.0.1` ni `http://localhost` (contenido mixto bloqueado por el navegador).
 - Use una ruta relativa al mismo host del portal o una URL `https://` del API Gateway.
 - En CI/CD, el workflow escribe `secrets.BUILD_SECRET` en `.env` antes de `npm run build`; debe incluir al menos `VITE_API_BASE_URL` y `VITE_APP_CODE` para el ambiente destino.
+
+Los cambios en `docs/` y `README.md` se sincronizan a Confluence al mergear el PR en la rama principal del repositorio.
